@@ -11,3 +11,5 @@ interface developer{
     projects: project[];
     experience: number;
 }
+
+const developers: developer[] = [];
