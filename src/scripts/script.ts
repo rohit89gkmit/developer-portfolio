@@ -91,7 +91,6 @@ function addSkill(developer:developerInterface, skill:string):void{
     else{
         const clonedDeveloper = cloneDeveloper(developer);
         clonedDeveloper.skills.push(skill);
-        // const index = developersList.findIndex((currentDeveloper)=>currentDeveloper===developer);
         const index = indexOfDeveloperInDeveloperList(developer);
         if(index) developersList[index] = clonedDeveloper;
     }
