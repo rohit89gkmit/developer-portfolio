@@ -112,3 +112,25 @@ function updateSkill(developer:developerInterface,oldSkill:string,newSkill:strin
     }
 }
 
+function validateProject(project: projectInterface): boolean {
+    return project.techStack.length > 1 && project.techStack.some((currentTechStack)=>currentTechStack==='JS');
+}
+
+function addProject(developer: developerInterface, project: projectInterface): void {
+    if(!isDeveloperExists(developer)) throw new Error('Developer do not Exists');
+
+    if (validateProject(project)) {
+        throw new Error('Invalid project details');
+    }
+    const clonedDeveloper = cloneDeveloper(developer);
+    clonedDeveloper.projects.push(project);
+    const index = indexOfDeveloperInDeveloperList(developer)
+    developersList[index] = clonedDeveloper;
+}
+
+function listProjects(developer:developerInterface):string {
+    return developer.projects.map((currentProject)=>currentProject.projectName).join(', ');
+}
+
+
+
