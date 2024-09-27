@@ -12,7 +12,7 @@ interface developerInterface{
     projects: projectInterface[];
     experience: number;
 }
-const developers: developerInterface[] = [
+const developersList: developerInterface[] = [
     {
         email: 'rohitsharmaa.com',
         name: 'Rohit',
@@ -34,27 +34,75 @@ const newDeveloper: developerInterface = {
         projects: [{projectName: 'xz',isCompleted:false,techStack:['JS','React']}]
 }
 
-function addDeveloper(newDeveloper:developerInterface):void{
-    const isExists = developers.some(({email})=>email===newDeveloper.email);
-    if(isExists){
-        alert('Developer already exists');
+function isDeveloperExists(developer:developerInterface):boolean{
+    return developersList.some(({email})=>email===developer.email);
+}
+
+function addDeveloper(developer:developerInterface):void{
+    if (developer.name.trim().length === 0) {
+        throw new Error('Developer name is required and cannot be empty.');
+    }
+
+    if (typeof developer.age !== 'number' || developer.age <= 0) {
+        throw new Error('Developer age must be a positive value');
+    }
+
+    if (typeof developer.isEmployed !== 'boolean') {
+        throw new Error('Developer employment status must be a boolean value');
+    }
+
+    if (developer.skills.length === 0) {
+        throw new Error('Developer must have at least one skill.');
+    }
+
+    if (typeof developer.experience !== 'number' || developer.experience < 0) {
+        throw new Error('Developer experience must be a non-negative number.');
+    }
+    if (developer.experience>developer.age) {
+        throw new Error('Developer cannot have experience greater than age');
+    }
+    if (developer.projects.length===0) {
+        throw new Error('Developer must have at least one project');
+    }
+    if(isDeveloperExists(developer)){
+        throw new Error('Developer with this email already exists');
     }
     else{
-        developers.push(newDeveloper);
+        developersList.push(developer);
     }
 }
 addDeveloper(newDeveloper);
-// console.log(developers);
+
+function cloneDeveloper(developer:developerInterface):developerInterface{
+    return JSON.parse(JSON.stringify(developer))
+}
 
 function addSkill(developer:developerInterface, skill:string):void{
-    const isExists = developer.skills.some((currentSkill)=>currentSkill===skill);
-    if(isExists){
-        alert('Skill already exists');
+    if(!isDeveloperExists(developer)) throw new Error('Developer do not Exists');
+    
+    const isExistsSkill = developer.skills.some((currentSkill)=>currentSkill===skill);
+    if(isExistsSkill){
+        throw new Error('Skill already exists');
     }
     else{
-        developer.skills.push(skill);
+        const clonedDeveloper = cloneDeveloper(developer);
+        clonedDeveloper.skills.push(skill);
+        const index = developersList.findIndex((currentDeveloper)=>currentDeveloper===developer);
+        if(index) developersList[index] = clonedDeveloper;
     }
 }
 
 addSkill(newDeveloper,'Node');
-console.log(developers[0]);
+
+function updateSkill(developer:developerInterface,oldSkill:string,newSkill:string):void{
+    if(!isDeveloperExists(developer)) throw new Error('Developer do not Exists');
+
+    const indexOfOldSkill = developer.skills.findIndex((currentSkill)=>currentSkill===oldSkill);
+    if(indexOfOldSkill===-1) throw new Error('Skill do not exist');
+    else{
+        const clonedDeveloper = cloneDeveloper(developer);
+        clonedDeveloper.skills[indexOfOldSkill] = newSkill;
+        const index = developersList.findIndex((currentDeveloper)=>currentDeveloper===developer);
+        if(index) developersList[index] = clonedDeveloper;
+    }
+}
