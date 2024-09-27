@@ -139,6 +139,7 @@ function listSkills(developer:developerInterface):string{
 
     return developer.skills.map((currentSkill)=>currentSkill).join(', ');
 }
+
 function countCompletedProjects(developer:developerInterface):number{
     if(!isDeveloperExists(developer)) throw new Error('Developer do not Exists');
 
