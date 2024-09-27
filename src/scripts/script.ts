@@ -129,8 +129,15 @@ function addProject(developer: developerInterface, project: projectInterface): v
 }
 
 function listProjects(developer:developerInterface):string {
+    if(!isDeveloperExists(developer)) throw new Error('Developer do not Exists');
+
     return developer.projects.map((currentProject)=>currentProject.projectName).join(', ');
 }
 
+function listSkills(developer:developerInterface):string{
+    if(!isDeveloperExists(developer)) throw new Error('Developer do not Exists');
+
+    return developer.skills.map((currentSkill)=>currentSkill).join(', ');
+}
 
 
