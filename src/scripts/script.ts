@@ -38,7 +38,7 @@ function isDeveloperExists(developer:developerInterface):boolean{
     return developersList.some(({email})=>email===developer.email);
 }
 function indexOfDeveloperInDeveloperList(developer:developerInterface):number{
-    const index = developersList.findIndex((currentDeveloper)=>currentDeveloper===developer);
+    const index = developersList.findIndex(({email})=>email===developer.email);
     return index;
 }
 
