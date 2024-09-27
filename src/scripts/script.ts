@@ -37,6 +37,10 @@ const newDeveloper: developerInterface = {
 function isDeveloperExists(developer:developerInterface):boolean{
     return developersList.some(({email})=>email===developer.email);
 }
+function indexOfDeveloperInDeveloperList(developer:developerInterface):number{
+    const index = developersList.findIndex((currentDeveloper)=>currentDeveloper===developer);
+    return index;
+}
 
 function addDeveloper(developer:developerInterface):void{
     if (developer.name.trim().length === 0) {
@@ -87,7 +91,8 @@ function addSkill(developer:developerInterface, skill:string):void{
     else{
         const clonedDeveloper = cloneDeveloper(developer);
         clonedDeveloper.skills.push(skill);
-        const index = developersList.findIndex((currentDeveloper)=>currentDeveloper===developer);
+        // const index = developersList.findIndex((currentDeveloper)=>currentDeveloper===developer);
+        const index = indexOfDeveloperInDeveloperList(developer);
         if(index) developersList[index] = clonedDeveloper;
     }
 }
@@ -102,7 +107,8 @@ function updateSkill(developer:developerInterface,oldSkill:string,newSkill:strin
     else{
         const clonedDeveloper = cloneDeveloper(developer);
         clonedDeveloper.skills[indexOfOldSkill] = newSkill;
-        const index = developersList.findIndex((currentDeveloper)=>currentDeveloper===developer);
+        const index = indexOfDeveloperInDeveloperList(developer);
         if(index) developersList[index] = clonedDeveloper;
     }
 }
+
