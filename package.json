@@ -1,6 +1,7 @@
 {
   "scripts":{
       "build": "tsc --watch",
-      "start": "npm run build"
+      "start": "npm run build",
+      "type": "module"
   }
 }
