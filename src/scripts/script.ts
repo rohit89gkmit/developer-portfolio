@@ -1,18 +1,18 @@
-interface project{
+interface projectInterface{
     projectName: string;
     isCompleted: boolean;
     techStack: string[];
 }
-interface developer{
+interface developerInterface{
     email: string;
     name: string;
     age: number;
     isEmployed: boolean;
     skills: string[];
-    projects: project[];
+    projects: projectInterface[];
     experience: number;
 }
-const developers: developer[] = [
+const developers: developerInterface[] = [
     {
         email: 'rohitsharmaa.com',
         name: 'Rohit',
@@ -24,7 +24,7 @@ const developers: developer[] = [
     }
 ];
 
-const newDeveloper: developer = {
+const newDeveloper: developerInterface = {
         email: 'xyz@.com',
         name: 'Rudra',
         age: 22,
@@ -34,7 +34,7 @@ const newDeveloper: developer = {
         projects: [{projectName: 'xz',isCompleted:false,techStack:['JS','React']}]
 }
 
-function addDeveloper(newDeveloper:developer){
+function addDeveloper(newDeveloper:developerInterface):void{
     const isExists = developers.some(({email})=>email===newDeveloper.email);
     if(isExists){
         alert('Developer already exists');
@@ -44,5 +44,17 @@ function addDeveloper(newDeveloper:developer){
     }
 }
 addDeveloper(newDeveloper);
-console.log(developers);
+// console.log(developers);
 
+function addSkill(developer:developerInterface, skill:string):void{
+    const isExists = developer.skills.some((currentSkill)=>currentSkill===skill);
+    if(isExists){
+        alert('Skill already exists');
+    }
+    else{
+        developer.skills.push(skill);
+    }
+}
+
+addSkill(newDeveloper,'Node');
+console.log(developers[0]);
