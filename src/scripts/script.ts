@@ -88,12 +88,12 @@ function addSkill(developer:developerInterface, skill:string):void{
     if(isExistsSkill){
         throw new Error('Skill already exists');
     }
-    else{
-        const clonedDeveloper = cloneDeveloper(developer);
-        clonedDeveloper.skills.push(skill);
-        const index = indexOfDeveloperInDeveloperList(developer);
-        if(index) developersList[index] = clonedDeveloper;
-    }
+    
+    const clonedDeveloper = cloneDeveloper(developer);
+    clonedDeveloper.skills.push(skill);
+    const index = indexOfDeveloperInDeveloperList(developer);
+    if(index) developersList[index] = clonedDeveloper;
+    
 }
 
 addSkill(newDeveloper,'Node');
@@ -103,12 +103,12 @@ function updateSkill(developer:developerInterface,oldSkill:string,newSkill:strin
 
     const indexOfOldSkill = developer.skills.findIndex((currentSkill)=>currentSkill===oldSkill);
     if(indexOfOldSkill===-1) throw new Error('Skill do not exist');
-    else{
-        const clonedDeveloper = cloneDeveloper(developer);
-        clonedDeveloper.skills[indexOfOldSkill] = newSkill;
-        const index = indexOfDeveloperInDeveloperList(developer);
-        if(index) developersList[index] = clonedDeveloper;
-    }
+    
+    const clonedDeveloper = cloneDeveloper(developer);
+    clonedDeveloper.skills[indexOfOldSkill] = newSkill;
+    const index = indexOfDeveloperInDeveloperList(developer);
+    if(index) developersList[index] = clonedDeveloper;
+    
 }
 
 function validateProject(project: projectInterface): boolean {
@@ -130,19 +130,62 @@ function addProject(developer: developerInterface, project: projectInterface): v
 function listProjects(developer:developerInterface):string {
     if(!isDeveloperExists(developer)) throw new Error('Developer do not Exists');
 
-    return developer.projects.map((currentProject)=>currentProject.projectName).join(', ');
+    const {projects} = developer;
+    return projects.map((currentProject)=>currentProject.projectName).join(', ');
 }
 
 function listSkills(developer:developerInterface):string{
     if(!isDeveloperExists(developer)) throw new Error('Developer do not Exists');
 
-    return developer.skills.map((currentSkill)=>currentSkill).join(', ');
+    const {skills} = developer;
+    return skills.join(', ');
 }
 
 function countCompletedProjects(developer:developerInterface):number{
     if(!isDeveloperExists(developer)) throw new Error('Developer do not Exists');
 
-    return developer.projects.reduce((accum,currentProject)=>currentProject.isCompleted ? (accum+1) :accum, 0)
+    const {projects} = developer;
+    return projects.reduce((accum,{isCompleted})=>isCompleted ? (accum+1) :accum, 0)
 }
 
 
+function findDevelopersBySkill(developersList:developerInterface[], skill:string):developerInterface[]{
+    return developersList.filter(({skills})=>skills.some((currentSkill)=>currentSkill===skill));
+}
+
+function updateDeveloper(developer:developerInterface,updatesObject:Partial<developerInterface>):developerInterface{
+    if(!isDeveloperExists(developer)) throw new Error('Developer do not Exists');
+
+    return {...developer,...updatesObject};
+}
+
+function sortDevelopersByEmploymentAndAge(developersList: developerInterface[], employedFirst: boolean, ageAscending: boolean): developerInterface[] {
+    return developersList.sort((a, b) => {
+        
+        if (a.isEmployed !== b.isEmployed) {
+            if(employedFirst){
+                return a.isEmployed ? -1 : 1;
+            }
+            else{
+                return a.isEmployed ? 1 : -1;
+            }
+        }
+
+        if(ageAscending){
+            return a.age - b.age;
+        }
+        else{
+            return b.age - a.age;
+        }
+
+    });
+}
+
+function addProperty<T, K extends keyof T>(object: T, key: K, value: T[K]): void {
+    object[key] = value;
+}
+
+function removeDeveloperByCondition(developersList: developerInterface[], condition: (developer: developerInterface) => boolean): developerInterface[] {
+    return developersList.filter(dev => !condition(dev));
+}
+const employedDevelopers = removeDeveloperByCondition(developersList, (developer)=>developer.isEmployed);
