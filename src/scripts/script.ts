@@ -1,17 +1,4 @@
-interface projectInterface {
-  projectName: string;
-  isCompleted: boolean;
-  techStack: string[];
-}
-interface developerInterface {
-  email: string;
-  name: string;
-  age: number;
-  isEmployed: boolean;
-  skills: string[];
-  projects: projectInterface[];
-  experience: number;
-}
+import { projectInterface, developerInterface } from "./Interfaces";
 
 type developers = developerInterface[];
 const developersList: developerInterface[] = [];
@@ -63,6 +50,7 @@ function validateDeveloper(developer: developerInterface): boolean {
 function addDeveloper(developer: developerInterface): void {
   if (validateDeveloper(developer)) developersList.push(developer);
 }
+
 
 function cloneDeveloper(developer: developerInterface): developerInterface {
   return JSON.parse(JSON.stringify(developer));
