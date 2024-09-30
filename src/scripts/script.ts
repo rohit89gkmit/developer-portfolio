@@ -13,6 +13,7 @@ interface developerInterface {
   experience: number;
 }
 
+type developers = developerInterface[];
 const developersList: developerInterface[] = [];
 
 function isDeveloperExists(developer: developerInterface): boolean {
@@ -151,7 +152,7 @@ function countCompletedProjects(developer: developerInterface): number {
 }
 
 function findDevelopersBySkill(
-  developersList: developerInterface[],
+  developersList: developers,
   skill: string
 ): developerInterface[] {
   return developersList.filter(({ skills }) =>
@@ -169,7 +170,7 @@ function updateDeveloper(
 }
 
 function sortDevelopersByEmploymentAndAge(
-  developersList: developerInterface[],
+  developersList: developers,
   employedFirst: boolean,
   ageAscending: boolean
 ): developerInterface[] {
@@ -200,7 +201,7 @@ function addProperty<T, K extends keyof T>(
 }
 
 function removeDeveloperByCondition(
-  developersList: developerInterface[],
+  developersList: developers,
   condition: (developer: developerInterface) => boolean
 ): developerInterface[] {
   return developersList.filter((dev) => !condition(dev));
